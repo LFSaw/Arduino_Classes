@@ -15,24 +15,19 @@ running Mozzi_GSR_Mappings_Test sketch
 **********************************************/
 
 // Set up Serial Connection
+(
 ~serial = QuickSerial.new();
-~plots = DynamicMultiPlot.new("SerialData", 800, 700, 400, 800, [["Raw GSR", 250, 0, 4095],["GSR Smooth", 250, 0, 4095],["Linear", 250, 0, 255],["Exponential", 250, 0, 255],["Log", 250, 0, 255]], 1, margin: 10, flow: 'left');
+~plots = DynamicMultiPlot.new("SerialData", 800, 700, 400, 800, [["Raw GSR", 250, 0, 4095],["GSR DCcoupled", 250, 1024, 3*1024], ["GSR Smooth", 250, 0, 4095]], 1, margin: 10, flow: 'left');
 ~serial.addResponder($G, {|val|
 		~plots.add(0, val);
 });
 ~serial.addResponder($S, {|val|
 		~plots.add(1, val);
 });
-~serial.addResponder($M, {|val|
+~serial.addResponder($R, {|val|
 		~plots.add(2, val);
 });
-~serial.addResponder($E, {|val|
-		~plots.add(3, val);
-});
-~serial.addResponder($L, {|val|
-		~plots.add(4, val);
-});
-
+)
 // Start the whole thing
 ~serial.startSerial(115200);
 ~serial.stopSerial;
